@@ -1,7 +1,13 @@
+"use client";
+import React from "react";
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
+import { useParams } from "next/navigation";
+import * as db from "../../../../database";
 
 export default function PeopleTable() {
+  const { cid } = useParams();
+  const { users, enrollments } = db;
   return (
     <div id="wd-people-table">
       <Table striped responsive>
@@ -16,50 +22,27 @@ export default function PeopleTable() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="wd-full-name text-nowrap">
-              <FaUserCircle className="me-2 fs-3 text-secondary" />
-              <span className="text-danger">Vinny Jackson</span>
-            </td>
-            <td className="wd-login-id">001234567S</td>
-            <td className="wd-section">S101</td>
-            <td className="wd-role">Student</td>
-            <td className="wd-last-activity">2020-10-01</td>
-            <td className="wd-total-activity">10:21:32</td>
-          </tr>
-          <tr>
-            <td className="wd-full-name text-nowrap">
-              <FaUserCircle className="me-2 fs-3 text-secondary" />
-              <span className="text-danger">Daniel Stevens</span>
-            </td>
-            <td className="wd-login-id">001234568B</td>
-            <td className="wd-section">S102</td>
-            <td className="wd-role">Student</td>
-            <td className="wd-last-activity">2020-11-05</td>
-            <td className="wd-total-activity">15:30:10</td>
-          </tr>
-          <tr>
-            <td className="wd-full-name text-nowrap">
-              <FaUserCircle className="me-2 fs-3 text-secondary" />
-              <span className="text-danger">Chris Warren</span>
-            </td>
-            <td className="wd-login-id">001234569R</td>
-            <td className="wd-section">S101</td>
-            <td className="wd-role">Student</td>
-            <td className="wd-last-activity">2020-09-15</td>
-            <td className="wd-total-activity">22:15:00</td>
-          </tr>
-          <tr>
-            <td className="wd-full-name text-nowrap">
-              <FaUserCircle className="me-2 fs-3 text-secondary" />
-              <span className="text-danger">Aragorn Elesar</span>
-            </td>
-            <td className="wd-login-id">001234570W</td>
-            <td className="wd-section">S101</td>
-            <td className="wd-role">TA</td>
-            <td className="wd-last-activity">2020-12-01</td>
-            <td className="wd-total-activity">45:00:00</td>
-          </tr>
+          {users
+            .filter((usr) =>
+              enrollments.some(
+                (enrollment) =>
+                  enrollment.user === usr._id && enrollment.course === cid
+              )
+            )
+            .map((user: any) => (
+              <tr key={user._id}>
+                <td className="wd-full-name text-nowrap">
+                  <FaUserCircle className="me-2 fs-1 text-secondary" />
+                  <span className="wd-first-name">{user.firstName}</span>{" "}
+                  <span className="wd-last-name">{user.lastName}</span>
+                </td>
+                <td className="wd-login-id">{user.loginId}</td>
+                <td className="wd-section">{user.section}</td>
+                <td className="wd-role">{user.role}</td>
+                <td className="wd-last-activity">{user.lastActivity}</td>
+                <td className="wd-total-activity">{user.totalActivity}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </div>
