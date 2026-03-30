@@ -33,8 +33,8 @@ export default function TOC() {
         </NavLink>
       </NavItem>
       <NavItem>
-      <NavLink href="/labs/lab5" as={Link} className={`nav-link ${pathname.endsWith("lab5") ? "active" : ""}`}>
-        Lab 5
+        <NavLink href="/labs/lab5" as={Link} className={`nav-link ${pathname.endsWith("lab5") ? "active" : ""}`}>
+          Lab 5
         </NavLink>
       </NavItem>
       <NavItem>
@@ -43,7 +43,19 @@ export default function TOC() {
         </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="https://github.com/SantiagoMain/kambaz-next-js">My GitHub</NavLink>
+        <NavLink href="https://github.com/SantiagoMain/kambaz-next-js">
+          Kambaz React
+        </NavLink>
+      </NavItem>
+      <NavItem>
+        <NavLink href="https://github.com/SantiagoMain/kambaz-node-server-app">
+          Kambaz Node
+        </NavLink>
+      </NavItem>
+      <NavItem>
+        <NavLink href="https://kambaz-node-server-app-8dhy.onrender.com">
+          Server
+        </NavLink>
       </NavItem>
     </Nav>
   );
