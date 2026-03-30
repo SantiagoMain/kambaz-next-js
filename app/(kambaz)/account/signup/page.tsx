@@ -1,38 +1,38 @@
-import React from "react";
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { FormControl, Button } from "react-bootstrap";
+import { setCurrentUser } from "../reducer";
+import * as client from "../client";
 
 export default function Signup() {
-  return (
-    <div id="wd-signup-screen">
-      <h3>Sign up</h3>
-      
-      <FormControl 
-        placeholder="username" 
-        className="wd-username mb-2" 
-      />
-      
-      <FormControl 
-        placeholder="password" 
-        type="password" 
-        className="wd-password mb-2" 
-      />
-      
-      <FormControl 
-        placeholder="verify password" 
-        type="password" 
-        className="wd-password-verify mb-2" 
-      />
-      
-      <Link href="/account/profile" id="wd-signup-btn">
-        <Button variant="primary" className="w-100 mb-2">
-          Sign up
-        </Button>
-      </Link>
-      
-      <Link href="/account/signin" id="wd-signin-link">
-        Sign in
-      </Link>
-    </div>
-  );
+    const [user, setUser] = useState<any>({});
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const signup = async () => {
+        const currentUser = await client.signup(user);
+        dispatch(setCurrentUser(currentUser));
+        router.push("/account/profile");
+    };
+
+    return (
+        <div id="wd-signup-screen">
+            <h1>Sign up</h1>
+            <FormControl value={user.username || ""}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
+                className="wd-username mb-2" placeholder="username" />
+            <FormControl value={user.password || ""}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                className="wd-password mb-2" placeholder="password" type="password" />
+            <Button onClick={signup} className="wd-signup-btn btn btn-primary mb-2 w-100">
+                Sign up
+            </Button>
+            <Link href="/account/signin" className="wd-signin-link">
+                Sign in
+            </Link>
+        </div>
+    );
 }
