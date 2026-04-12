@@ -6,20 +6,28 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 export default function AccountNavigation() {
-  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
-  const links = currentUser ? ["profile"] : ["signin", "signup"];
-  const pathname = usePathname();
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+    const links = currentUser ? ["profile"] : ["signin", "signup"];
+    const pathname = usePathname();
 
-  return (
-    <Nav variant="pills" className="flex-column">
-      {links.map((link) => (
-        <NavItem key={link}>
-          <NavLink as={Link} href={`/account/${link}`}
-                   active={pathname.endsWith(link)}>
-            {link.charAt(0).toUpperCase() + link.slice(1)}
-          </NavLink>
-        </NavItem>
-      ))}
-    </Nav>
-  );
+    return (
+        <Nav variant="pills" className="flex-column">
+            {links.map((link) => (
+                <NavItem key={link}>
+                    <NavLink as={Link} href={`/account/${link}`}
+                        active={pathname.endsWith(link)}>
+                        {link.charAt(0).toUpperCase() + link.slice(1)}
+                    </NavLink>
+                </NavItem>
+            ))}
+            {currentUser && (currentUser as any).role === "ADMIN" && (
+                <NavItem>
+                    <NavLink as={Link} href="/account/users"
+                        active={pathname.endsWith("users")}>
+                        Users
+                    </NavLink>
+                </NavItem>
+            )}
+        </Nav>
+    );
 }
